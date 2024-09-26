@@ -73,12 +73,14 @@ const Navbar = () => {
         <div className="flex items-center space-x-4 text-gray-700">
           <FaSearch className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
           <FaUser className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
-          <div className="relative">
-            <FaShoppingCart className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
-            <span className="absolute top-[-8px] right-[-10px] bg-red-600 text-white text-xs font-bold rounded-full px-1">
-              3
-            </span>
-          </div>
+          <Link to={"/cart"}>
+            <div className="relative">
+              <FaShoppingCart className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
+              <span className="absolute top-[-8px] right-[-10px] bg-red-600 text-white text-xs font-bold rounded-full px-1">
+                3
+              </span>
+            </div>
+          </Link>
         </div>
       </nav>
     </div>

@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 const baseQuery = async (args, api, extraOptions) => {
   const { dispatch } = api;
   const rawBaseQuery = fetchBaseQuery({
-    baseUrl: "https://66ded93ede4426916ee2a04b.mockapi.io", // o'zgaradi
+    baseUrl: "https://headphones-server.onrender.com", // o'zgaradi
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("x-auth-token"); // o'zgaradi
       if (token) {

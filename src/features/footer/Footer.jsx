@@ -1,142 +1,56 @@
 import React from "react";
-import { FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
-function Footer() {
+// Images
+import logo from "@/assets/logo.svg";
+// import greenTxt from "@/assets/green-text.svg";
+
+const Footer = () => {
+  const linkStyle = "hover:underline cursor-pointer";
   return (
-    <footer className="bg-gray-900 text-white py-8">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between">
-          <div className="mb-6 md:mb-0">
-            <h3 className="text-lg font-semibold">GameGeek</h3>
-            <p className="text-sm mt-2">Start your game with the best</p>
+    <footer className="bg-[rgb(13,38,18)]">
+      <div className="wrapper py-12 w-full flex justify-between flex-col text-center md:flex-row md:text-start gap-12">
+        <div className="footer__imgs md:w-1/3 flex flex-col gap-5 items-center md:items-start">
+          <img src={logo} alt="website name logo" className="bg-white border" />
+          <h1 className="text-2xl text-nowrap font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-green-400">
+            Start your game <br /> with the best
+          </h1>
+        </div>
+        <div className="w-full flex items-center md:items-start justify-end flex-col md:flex-row gap-12 md:gap-[10%] text-slate-100">
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Services</h2>
+            <ul className="space-y-2">
+              <li className={linkStyle}>Gift Card</li>
+              <li className={linkStyle}>Mobile App</li>
+              <li className={linkStyle}>Shipping & Delivery</li>
+              <li className={linkStyle}>Order Pickup</li>
+              <li className={linkStyle}>Account Signup</li>
+            </ul>
           </div>
-          <div className="flex flex-col md:flex-row md:space-x-10">
-            <div>
-              <h3 className="text-lg font-semibold">Services</h3>
-              <ul className="mt-2 space-y-1">
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Gift Card
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Mobile App
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Shipping & Delivery
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Order Pickup
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Account Signup
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-6 md:mt-0">
-              <h3 className="text-lg font-semibold">Help</h3>
-              <ul className="mt-2 space-y-1">
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    ShopCart Help
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Returns
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Track Orders
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Feedback
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Security & Fraud
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="mt-6 md:mt-0">
-              <h3 className="text-lg font-semibold">About Us</h3>
-              <ul className="mt-2 space-y-1">
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    News & Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Help
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-sm hover:underline">
-                    Press Center
-                  </a>
-                </li>
-              </ul>
-            </div>
+
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Help</h2>
+            <ul className="space-y-2">
+              <li className={linkStyle}>ShopCart Help</li>
+              <li className={linkStyle}>Returns</li>
+              <li className={linkStyle}>Track Orders</li>
+              <li className={linkStyle}>Contact Us</li>
+              <li className={linkStyle}>Feedback</li>
+              <li className={linkStyle}>Security & Fraud</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">About Us</h2>
+            <ul className="space-y-2">
+              <li className={linkStyle}>News & Blog</li>
+              <li className={linkStyle}>Help</li>
+              <li className={linkStyle}>Press Center</li>
+            </ul>
           </div>
         </div>
-        <div className="mt-6 flex flex-col md:flex-row justify-between items-center">
-          <div className="flex space-x-4">
-            <a href="#" className="text-sm hover:underline">
-              Help Center
-            </a>
-            <a href="#" className="text-sm hover:underline">
-              Privacy & Policy
-            </a>
-            <a href="#" className="text-sm hover:underline">
-              Terms of Service
-            </a>
-          </div>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <a
-              href="#"
-              className="text-sm hover:text-green-500 transition duration-200"
-            >
-              <FaTwitter />
-            </a>
-            <a
-              href="#"
-              className="text-sm hover:text-green-500 transition duration-200"
-            >
-              <FaLinkedin />
-            </a>
-            <a
-              href="#"
-              className="text-sm hover:text-green-500 transition duration-200"
-            >
-              <FaInstagram />
-            </a>
-          </div>
-        </div>
-        <p className="text-sm text-center mt-6">
-          &copy; All rights reserved by GameGeek | 2023
-        </p>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;
