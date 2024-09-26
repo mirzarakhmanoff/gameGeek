@@ -3,19 +3,22 @@ import logo from "@/assets/logo.svg";
 import { Link } from "react-router-dom";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { Button, message, Space } from "antd";
 
 const Navbar = () => {
+  const cartItems = useSelector((state) => state.cart.value);
+  const totalItems = cartItems.length;
+
   return (
-    <div className="bg-white ">
-      <nav className="container mx-auto flex justify-around  items-center py-[40px]">
-        {/* Logo */}
+    <div className="bg-white">
+      <nav className="container mx-auto flex justify-around items-center py-[40px]">
         <div className="logo w-[200px]">
           <Link to={"/"}>
             <img src={logo} alt="Logo" className="h-10" />
           </Link>
         </div>
 
-        {/* Navigation Links */}
         <div>
           <ul className="flex space-x-6 text-gray-700">
             <li>
@@ -69,15 +72,15 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Icons */}
         <div className="flex items-center space-x-4 text-gray-700">
           <FaSearch className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
           <FaUser className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
           <Link to={"/cart"}>
             <div className="relative">
               <FaShoppingCart className="text-xl hover:text-[#14FF00] cursor-pointer transition duration-200" />
+
               <span className="absolute top-[-8px] right-[-10px] bg-red-600 text-white text-xs font-bold rounded-full px-1">
-                3
+                {totalItems}
               </span>
             </div>
           </Link>

@@ -1,11 +1,21 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { update, remove } from "@/redux/slices/cart-slice"; // Adjust the import based on your file structure
-import { FaTimes } from "react-icons/fa"; // Import the icon
+import { update, remove } from "@/redux/slices/cart-slice";
+import { FaTimes } from "react-icons/fa";
+import { message } from "antd";
+import { Link } from "react-router-dom";
 
 function ShoppingCart() {
-  const cartItems = useSelector((state) => state.cart.value); // Ensure correct state path
-  const dispatch = useDispatch(); // Hook to dispatch actions
+  const cartItems = useSelector((state) => state.cart.value);
+  const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const successRemove = () => {
+    messageApi.open({
+      type: "success",
+      content: "Item removed from cart successfully!",
+    });
+  };
 
   const handleQuantityChange = (item, delta) => {
     const newQuantity = item.quantity + delta;
@@ -16,7 +26,8 @@ function ShoppingCart() {
   };
 
   const handleRemoveItem = (itemId) => {
-    dispatch(remove(itemId)); // Dispatch the remove action
+    dispatch(remove({ id: itemId }));
+    successRemove();
   };
 
   const calculateSubtotal = () => {
@@ -34,98 +45,114 @@ function ShoppingCart() {
 
   return (
     <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-6 border-b-2 pb-2">Shopping Cart</h1>
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="py-3 px-4 text-left">Product</th>
-            <th className="py-3 px-4 text-center">Quantity</th>
-            <th className="py-3 px-4 text-right">Price</th>
-            <th className="py-3 px-4 text-right">Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.length === 0 ? (
-            <tr>
-              <td colSpan="4" className="py-4 text-center">
-                Your cart is empty.
-              </td>
-            </tr>
-          ) : (
-            cartItems.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-100 transition">
-                <td className="py-4 px-4 flex items-center">
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-16 h-16 rounded-md shadow"
-                  />
-                  <div className="ml-4">
-                    <p className="text-lg font-semibold">{item.name}</p>
-                    <p className="text-gray-500">
-                      {item.color_options.join(", ")}
-                    </p>
-                    <p className="text-gray-500">{item.description}</p>
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <div className="flex items-center justify-center">
-                    <button
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-2 py-1 rounded"
-                      onClick={() => handleQuantityChange(item, -1)}
-                      disabled={item.quantity === 1}
-                    >
-                      -
-                    </button>
-                    <span className="mx-2">{item.quantity || 0}</span>
-                    <button
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-2 py-1 rounded"
-                      onClick={() => handleQuantityChange(item, +1)}
-                    >
-                      +
-                    </button>
-                  </div>
-                </td>
-                <td className="py-4 px-4 text-right text-lg font-semibold">
-                  ${(item.price * item.quantity).toFixed(2)}{" "}
-                  {/* Total price for this item */}
-                </td>
-                <td className="py-4 px-4 text-center">
-                  <button
-                    className="text-red-500 hover:text-red-700"
-                    onClick={() => handleRemoveItem(item.id)}
-                  >
-                    <FaTimes className="w-6 h-6" />
-                  </button>
-                </td>
+      {contextHolder}
+      <div className="mb-4 flex justify-between items-center">
+        <a href="/" className="text-gray-600 hover:text-gray-800">
+          &larr; Back to Shopping
+        </a>
+      </div>
+      <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
+      <div className="grid grid-cols-3 gap-6 border-b pb-4 mb-6">
+        <div className="col-span-2">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b">
+                <th className="py-2 px-4 text-left">Product</th>
+                <th className="py-2 px-4 text-center">Quantity</th>
+                <th className="py-2 px-4 text-right">Price</th>
+                <th className="py-2 px-4 text-right">Remove</th>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      <div className="mt-6 p-4 border-t border-gray-300">
-        <h2 className="text-lg font-semibold">Cart Totals</h2>
-        <ul className="mt-2">
-          <li className="flex justify-between py-2">
-            <span>Shipping (3-5 Business Days)</span>
-            <span>Free</span>
-          </li>
-          <li className="flex justify-between py-2">
-            <span>Tax (estimated for the United States (US))</span>
-            <span>${tax.toFixed(2)}</span>
-          </li>
-          <li className="flex justify-between font-bold py-2">
-            <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
-          </li>
-          <li className="flex justify-between font-bold py-2">
-            <span>Total</span>
-            <span>${total.toFixed(2)}</span>
-          </li>
-        </ul>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-full">
-          Proceed to Checkout
-        </button>
+            </thead>
+            <tbody>
+              {cartItems.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="py-4 text-center">
+                    Your cart is empty.
+                  </td>
+                </tr>
+              ) : (
+                cartItems.map((item) => (
+                  <tr key={item.id} className="border-b">
+                    <td className="py-4 px-4 flex items-center">
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        className="w-16 h-16 rounded-md"
+                      />
+                      <div className="ml-4">
+                        <p className="font-semibold">{item.name}</p>
+                        <p className="text-gray-500 text-sm">
+                          {item.color_options.join(", ")}
+                        </p>
+                        <p className="text-gray-500 text-sm">
+                          {item.description}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <div className="flex justify-center items-center space-x-2">
+                        <button
+                          className="border border-gray-300 px-2 py-1 rounded hover:bg-gray-200"
+                          onClick={() => handleQuantityChange(item, -1)}
+                          disabled={item.quantity === 1}
+                        >
+                          -
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button
+                          className="border border-gray-300 px-2 py-1 rounded hover:bg-gray-200"
+                          onClick={() => handleQuantityChange(item, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+                    <td className="py-4 px-4 text-right font-semibold">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </td>
+                    <td className="py-4 px-4 text-right">
+                      <button
+                        className="text-red-500 hover:text-red-700"
+                        onClick={() => handleRemoveItem(item.id)}
+                      >
+                        <FaTimes className="w-5 h-5" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="col-span-1 p-6 border border-gray-300 rounded-lg">
+          <h2 className="text-lg font-semibold mb-4">Cart Totals</h2>
+          <ul className="space-y-2 mb-4">
+            <li className="flex justify-between">
+              <span>Shipping (3-5 Business Days)</span>
+              <span>Free</span>
+            </li>
+            <li className="flex justify-between">
+              <span>Tax (estimated for US)</span>
+              <span>${tax.toFixed(2)}</span>
+            </li>
+            <li className="flex justify-between font-bold">
+              <span>Subtotal</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </li>
+            <li className="flex justify-between font-bold">
+              <span>Total</span>
+              <span>${total.toFixed(2)}</span>
+            </li>
+          </ul>
+          <button className="bg-green-500 text-white py-2 px-4 rounded w-full font-semibold hover:bg-green-600 mb-4">
+            Proceed to Checkout
+          </button>
+          <Link to={"/products"}>
+            <button className="bg-blue-500 text-white py-2 px-4 rounded w-full font-semibold hover:bg-blue-600">
+              Back to Shopping
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

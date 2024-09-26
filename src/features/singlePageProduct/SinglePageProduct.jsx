@@ -2,9 +2,11 @@ import ReactStars from "react-stars";
 import { Link, useParams } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import { useGetSinglePageQuery } from "@/redux/api/filter-api";
-import { useState } from "react"; // Import useState for quantity management
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { add } from "@/redux/slices/cart-slice";
+import { message } from "antd";
 
-// Import or define images for the delivery section
 import img from "@/assets/delivery.svg";
 import img1 from "@/assets/delivery1.svg";
 
@@ -12,6 +14,9 @@ const SinglePageProduct = () => {
   const { id } = useParams();
   const { data } = useGetSinglePageQuery(id);
   const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
+  const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -21,8 +26,15 @@ const SinglePageProduct = () => {
     if (quantity > 1) setQuantity(quantity - 1);
   };
 
+  const handleAddToCart = () => {
+    dispatch(add({ cart: { ...data, quantity } }));
+    messageApi.success("Product added to cart successfully!");
+    setIsAdded(true); // Set to true after adding to cart
+  };
+
   return (
     <>
+      {contextHolder}
       <div className="container my-3 w-full flex items-center mt-6 mb-7">
         <Link to={"/products"}>
           <p className="text-[16px] font-[500]">Products / </p>
@@ -67,7 +79,7 @@ const SinglePageProduct = () => {
           <hr />
           <div className="flex flex-col gap-3">
             <p className="text-[15px] text-[#000000]">Choose color</p>
-            <div className="flex  gap-4">
+            <div className="flex gap-4">
               {data?.color_options?.map((color, index) => (
                 <button
                   key={index}
@@ -96,14 +108,20 @@ const SinglePageProduct = () => {
             </div>
           </div>
           <button
-            className="w-[80%] rounded-full bg-[#0BA42D] text-white h-[52px] 
+            onClick={handleAddToCart}
+            disabled={isAdded} // Disable button if already added
+            className={`w-[80%] rounded-full ${
+              isAdded ? "bg-gray-300 cursor-not-allowed" : "bg-[#0BA42D]"
+            } text-white h-[52px] 
                 hover:bg-gray-800 hover:text-gray-300 
                 active:bg-gray-900 active:scale-95 
                 focus:outline-none focus:ring-2 focus:ring-gray-500 
-                transition-all duration-300 ease-in-out flex gap-3 items-center justify-center"
+                transition-all duration-300 ease-in-out flex gap-3 items-center justify-center`}
           >
             <IoCartOutline className="text-[#fff]" />
-            <p className="text-[15px] text-[#fff] font-[500]">Add to Cart</p>
+            <p className="text-[15px] text-[#fff] font-[500]">
+              {isAdded ? "Added to Cart" : "Add to Cart"}
+            </p>
           </button>
           <div className="border border-dashed flex flex-col gap-8 mt-8 pl-[30px] p-[20px]">
             <div className="flex gap-4 items-center">
